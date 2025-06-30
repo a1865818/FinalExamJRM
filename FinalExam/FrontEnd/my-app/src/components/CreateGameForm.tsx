@@ -82,10 +82,14 @@ const CreateGameForm: React.FC<CreateGameFormProps> = ({
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label
+              htmlFor="game-name"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
               Game Name
             </label>
             <input
+              id="game-name"
               type="text"
               required
               value={formData.name}
@@ -98,10 +102,14 @@ const CreateGameForm: React.FC<CreateGameFormProps> = ({
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label
+              htmlFor="author-name"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
               Author Name
             </label>
             <input
+              id="author-name"
               type="text"
               required
               value={formData.author}
@@ -116,10 +124,14 @@ const CreateGameForm: React.FC<CreateGameFormProps> = ({
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label
+              htmlFor="min-range"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
               Min Range
             </label>
             <input
+              id="min-range"
               type="number"
               required
               min="1"
@@ -132,10 +144,14 @@ const CreateGameForm: React.FC<CreateGameFormProps> = ({
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label
+              htmlFor="max-range"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
               Max Range
             </label>
             <input
+              id="max-range"
               type="number"
               required
               min="2"
