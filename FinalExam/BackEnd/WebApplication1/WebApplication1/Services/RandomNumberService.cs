@@ -13,6 +13,7 @@ namespace WebApplication1.Services
 
         public int GenerateRandomNumber(int min, int max, HashSet<int> excludedNumbers)
         {
+            // Create list of available numbers (not in excluded set)
             var availableNumbers = new List<int>();
 
             for (int i = min; i <= max; i++)
@@ -28,6 +29,7 @@ namespace WebApplication1.Services
                 throw new InvalidOperationException("No available numbers to generate");
             }
 
+            // Select random number from available numbers
             var randomIndex = _random.Next(availableNumbers.Count);
             return availableNumbers[randomIndex];
         }

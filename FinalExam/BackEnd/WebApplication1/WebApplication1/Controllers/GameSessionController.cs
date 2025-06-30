@@ -66,12 +66,6 @@ namespace WebApplication1.Controllers
         {
             try
             {
-                var isActive = await _gameSessionService.IsGameSessionActiveAsync(sessionId);
-                if (!isActive)
-                {
-                    return BadRequest("Game session is not active or has expired");
-                }
-
                 var question = await _gameSessionService.GetNextQuestionAsync(sessionId);
                 return Ok(question);
             }
@@ -81,7 +75,14 @@ namespace WebApplication1.Controllers
             }
             catch (InvalidOperationException ex)
             {
-                return BadRequest(ex.Message);
+                // Game ended due to time expiration or all numbers used
+                return BadRequest(new
+                {
+                    message = ex.Message,
+                    gameEnded = true,
+                    reason = ex.Message.Contains("expired") ? "time_expired" :
+                             ex.Message.Contains("completed") || ex.Message.Contains("used") ? "all_numbers_used" : "unknown"
+                });
             }
             catch (Exception ex)
             {
@@ -108,7 +109,13 @@ namespace WebApplication1.Controllers
             }
             catch (InvalidOperationException ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new
+                {
+                    message = ex.Message,
+                    gameEnded = ex.Message.Contains("expired") || ex.Message.Contains("completed"),
+                    reason = ex.Message.Contains("expired") ? "time_expired" :
+                             ex.Message.Contains("already been answered") ? "duplicate_number" : "unknown"
+                });
             }
             catch (Exception ex)
             {
@@ -143,6 +150,24 @@ namespace WebApplication1.Controllers
             {
                 var isActive = await _gameSessionService.IsGameSessionActiveAsync(sessionId);
                 return Ok(isActive);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        [HttpGet("{sessionId}/stats")]
+        public async Task<ActionResult<GameSessionStatsResponse>> GetSessionStats(int sessionId)
+        {
+            try
+            {
+                var stats = await _gameSessionService.GetSessionStatsAsync(sessionId);
+                return Ok(stats);
+            }
+            catch (ArgumentException ex)
+            {
+                return NotFound(ex.Message);
             }
             catch (Exception ex)
             {

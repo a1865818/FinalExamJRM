@@ -171,7 +171,7 @@ namespace WebApplication1.Data
                 entity.HasCheckConstraint("CK_GameSessions_Scores", "[CorrectAnswers] >= 0 AND [IncorrectAnswers] >= 0");
             });
 
-            // GameAnswer configuration using Fluent API
+            // GameAnswer configuration using Fluent API - FIXED with proper unique constraint
             modelBuilder.Entity<GameAnswer>(entity =>
             {
                 entity.ToTable("GameAnswers");
@@ -221,13 +221,15 @@ namespace WebApplication1.Data
                 entity.HasIndex(e => e.IsCorrect)
                     .HasDatabaseName("IX_GameAnswers_IsCorrect");
 
+                // CRITICAL FIX: Change the existing index to be properly unique and prevent duplicates
                 entity.HasIndex(e => new { e.GameSessionId, e.Number })
                     .IsUnique()
-                    .HasDatabaseName("IX_GameAnswers_GameSessionId_Number");
+                    .HasDatabaseName("IX_GameAnswers_GameSessionId_Number_UNIQUE");
 
                 // Constraints
                 entity.HasCheckConstraint("CK_GameAnswers_Number", "[Number] >= 1");
             });
+
             // Seed default FizzBuzz game
             SeedData.Seed(modelBuilder);
         }

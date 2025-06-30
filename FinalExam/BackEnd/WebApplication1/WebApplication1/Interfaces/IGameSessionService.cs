@@ -10,5 +10,7 @@ namespace WebApplication1.Interfaces
         Task<GameResultResponse?> CompleteGameAsync(int sessionId);
         Task<GameSessionResponse?> GetGameSessionAsync(int sessionId);
         Task<bool> IsGameSessionActiveAsync(int sessionId);
+        Task<GameSessionStatsResponse> GetSessionStatsAsync(int sessionId);
+
     }
 }
