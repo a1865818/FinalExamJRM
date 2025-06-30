@@ -1,0 +1,132 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  
+  * {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+  }
+
+  body {
+    @apply bg-gray-50 text-gray-900;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
+  }
+
+  .btn-secondary {
+    @apply bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2;
+  }
+
+  .btn-success {
+    @apply bg-success-600 text-white px-4 py-2 rounded-lg hover:bg-success-700 transition-colors focus:outline-none focus:ring-2 focus:ring-success-500 focus:ring-offset-2;
+  }
+
+  .btn-danger {
+    @apply bg-error-600 text-white px-4 py-2 rounded-lg hover:bg-error-700 transition-colors focus:outline-none focus:ring-2 focus:ring-error-500 focus:ring-offset-2;
+  }
+
+  .input-field {
+    @apply w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent;
+  }
+
+  .card {
+    @apply bg-white rounded-lg shadow-lg p-6;
+  }
+
+  .game-number {
+    @apply text-6xl font-bold text-primary-600 select-none;
+  }
+
+  .timer-warning {
+    @apply text-yellow-600;
+  }
+
+  .timer-danger {
+    @apply text-red-600 animate-pulse;
+  }
+
+  .score-correct {
+    @apply text-success-600 font-semibold;
+  }
+
+  .score-incorrect {
+    @apply text-error-600 font-semibold;
+  }
+
+  .answer-correct {
+    @apply bg-success-50 border border-success-200 text-success-800 p-4 rounded-lg;
+  }
+
+  .answer-incorrect {
+    @apply bg-error-50 border border-error-200 text-error-800 p-4 rounded-lg;
+  }
+
+  .rule-display {
+    @apply bg-gray-50 rounded-lg p-2 text-sm border;
+  }
+
+  .game-template-card {
+    @apply bg-white rounded-lg border-2 border-gray-200 p-4 cursor-pointer transition-all hover:shadow-lg hover:border-primary-300;
+  }
+
+  .game-template-card.selected {
+    @apply border-primary-500 bg-primary-50;
+  }
+
+  .loading-spinner {
+    @apply animate-spin rounded-full border-b-2 border-primary-600;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Custom focus styles for better accessibility */
+.focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px #3b82f6, 0 0 0 4px rgba(59, 130, 246, 0.2);
+}
+
+/* Responsive text scaling */
+@media (min-width: 640px) {
+  .game-number {
+    font-size: 6rem;
+  }
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  body {
+    color: black;
+    background-color: white;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .card {
+    border: 2px solid #111827;
+  }
+  
+  .btn-primary {
+    background-color: #111827;
+    border: 2px solid #111827;
+  }
+}
