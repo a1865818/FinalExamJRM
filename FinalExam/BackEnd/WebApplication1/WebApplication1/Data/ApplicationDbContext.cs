@@ -31,12 +31,12 @@ namespace WebApplication1.Data
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(100)
-                    .HasColumnType("nvarchar(100)");
+                    .HasColumnType("varchar(100)");
 
                 entity.Property(e => e.Author)
                     .IsRequired()
                     .HasMaxLength(100)
-                    .HasColumnType("nvarchar(100)");
+                    .HasColumnType("varchar(100)");
 
                 entity.Property(e => e.MinRange)
                     .IsRequired()
@@ -48,7 +48,7 @@ namespace WebApplication1.Data
 
                 entity.Property(e => e.CreatedAt)
                     .IsRequired()
-                    .HasDefaultValueSql("GETUTCDATE()");
+                    .HasDefaultValueSql("NOW()");
 
                 // Indexes
                 entity.HasIndex(e => e.Name)
@@ -62,8 +62,8 @@ namespace WebApplication1.Data
                     .HasDatabaseName("IX_GameTemplates_CreatedAt");
 
                 // Constraints
-                entity.HasCheckConstraint("CK_GameTemplates_Range", "[MinRange] < [MaxRange]");
-                entity.HasCheckConstraint("CK_GameTemplates_MinRange", "[MinRange] >= 1");
+                entity.HasCheckConstraint("CK_GameTemplates_Range", "\"MinRange\" < \"MaxRange\"");
+                entity.HasCheckConstraint("CK_GameTemplates_MinRange", "\"MinRange\" >= 1");
             });
 
             // GameRule configuration using Fluent API
@@ -82,7 +82,7 @@ namespace WebApplication1.Data
                 entity.Property(e => e.Replacement)
                     .IsRequired()
                     .HasMaxLength(50)
-                    .HasColumnType("nvarchar(50)");
+                    .HasColumnType("varchar(50)");
 
                 entity.Property(e => e.GameTemplateId)
                     .IsRequired();
@@ -103,7 +103,7 @@ namespace WebApplication1.Data
                     .HasDatabaseName("IX_GameRules_GameTemplateId_Divisor");
 
                 // Constraints
-                entity.HasCheckConstraint("CK_GameRules_Divisor", "[Divisor] >= 2");
+                entity.HasCheckConstraint("CK_GameRules_Divisor", "\"Divisor\" >= 2");
             });
 
             // GameSession configuration using Fluent API
@@ -119,7 +119,7 @@ namespace WebApplication1.Data
                 entity.Property(e => e.PlayerName)
                     .IsRequired()
                     .HasMaxLength(100)
-                    .HasColumnType("nvarchar(100)");
+                    .HasColumnType("varchar(100)");
 
                 entity.Property(e => e.Duration)
                     .IsRequired();
@@ -138,7 +138,7 @@ namespace WebApplication1.Data
 
                 entity.Property(e => e.StartedAt)
                     .IsRequired()
-                    .HasDefaultValueSql("GETUTCDATE()");
+                    .HasDefaultValueSql("NOW()");
 
                 entity.Property(e => e.CompletedAt)
                     .IsRequired(false);
@@ -167,8 +167,8 @@ namespace WebApplication1.Data
                     .HasDatabaseName("IX_GameSessions_PlayerName");
 
                 // Constraints
-                entity.HasCheckConstraint("CK_GameSessions_Duration", "[Duration] >= 10 AND [Duration] <= 300");
-                entity.HasCheckConstraint("CK_GameSessions_Scores", "[CorrectAnswers] >= 0 AND [IncorrectAnswers] >= 0");
+                entity.HasCheckConstraint("CK_GameSessions_Duration", "\"Duration\" >= 10 AND \"Duration\" <= 300");
+                entity.HasCheckConstraint("CK_GameSessions_Scores", "\"CorrectAnswers\" >= 0 AND \"IncorrectAnswers\" >= 0");
             });
 
             // GameAnswer configuration using Fluent API - FIXED with proper unique constraint
@@ -187,19 +187,19 @@ namespace WebApplication1.Data
                 entity.Property(e => e.PlayerAnswer)
                     .IsRequired()
                     .HasMaxLength(200)
-                    .HasColumnType("nvarchar(200)");
+                    .HasColumnType("varchar(200)");
 
                 entity.Property(e => e.CorrectAnswer)
                     .IsRequired()
                     .HasMaxLength(200)
-                    .HasColumnType("nvarchar(200)");
+                    .HasColumnType("varchar(200)");
 
                 entity.Property(e => e.IsCorrect)
                     .IsRequired();
 
                 entity.Property(e => e.AnsweredAt)
                     .IsRequired()
-                    .HasDefaultValueSql("GETUTCDATE()");
+                    .HasDefaultValueSql("NOW()");
 
                 entity.Property(e => e.GameSessionId)
                     .IsRequired();
@@ -227,7 +227,7 @@ namespace WebApplication1.Data
                     .HasDatabaseName("IX_GameAnswers_GameSessionId_Number_UNIQUE");
 
                 // Constraints
-                entity.HasCheckConstraint("CK_GameAnswers_Number", "[Number] >= 1");
+                entity.HasCheckConstraint("CK_GameAnswers_Number", "\"Number\" >= 1");
             });
 
             // Seed default FizzBuzz game
