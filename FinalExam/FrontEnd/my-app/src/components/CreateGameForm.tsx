@@ -1,3 +1,4 @@
+import { gameTemplateApi, handleApiError } from "@/services/api";
 import { CreateGameTemplateRequest, GameRule } from "@/types/game";
 import {
   AlertCircle,
@@ -10,20 +11,21 @@ import {
   Plus,
   Trash2,
 } from "lucide-react";
-import React, { useEffect, useState } from "react";
-import { gameTemplateApi, handleApiError } from "@/services/api";
 import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
 
 interface CreateGameFormProps {
   onCancel: () => void;
   initialData?: CreateGameTemplateRequest;
   isEditing?: boolean;
+  templateId?: number; // Add templateId for editing
 }
 
 const CreateGameForm: React.FC<CreateGameFormProps> = ({
   onCancel,
   initialData,
   isEditing = false,
+  templateId,
 }) => {
   const [formData, setFormData] = useState({
     name: initialData?.name || "",
@@ -89,11 +91,22 @@ const CreateGameForm: React.FC<CreateGameFormProps> = ({
     try {
       setApiError(null);
       setLoading(true);
-      const newTemplate = await gameTemplateApi.create({
-        ...formData,
-        rules,
-      });
-      router.push(`/game-setup?gameId=${newTemplate.id}`);
+
+      if (isEditing && templateId) {
+        // Update existing template
+        await gameTemplateApi.update(templateId, {
+          ...formData,
+          rules,
+        });
+        router.push("/manage-templates");
+      } else {
+        // Create new template
+        const newTemplate = await gameTemplateApi.create({
+          ...formData,
+          rules,
+        });
+        router.push(`/game-setup?gameId=${newTemplate.id}`);
+      }
     } catch (err) {
       setApiError(handleApiError(err));
       // Scroll to API error
@@ -319,9 +332,8 @@ const CreateGameForm: React.FC<CreateGameFormProps> = ({
                     <p>
                       Your game will include numbers from{" "}
                       <strong>{formData.minRange}</strong> to{" "}
-                      <strong>{formData.maxRange}</strong> ({
-                        formData.maxRange - formData.minRange + 1
-                      } total numbers)
+                      <strong>{formData.maxRange}</strong> (
+                      {formData.maxRange - formData.minRange + 1} total numbers)
                     </p>
                   </div>
                 </div>
@@ -539,7 +551,10 @@ const CreateGameForm: React.FC<CreateGameFormProps> = ({
                       </p>
                       <ul className="space-y-2">
                         {getValidationErrors().map((errorMsg, index) => (
-                          <li key={index} className="flex items-start space-x-2">
+                          <li
+                            key={index}
+                            className="flex items-start space-x-2"
+                          >
                             <span className="text-red-600 font-bold">•</span>
                             <span className="font-medium">{errorMsg}</span>
                           </li>

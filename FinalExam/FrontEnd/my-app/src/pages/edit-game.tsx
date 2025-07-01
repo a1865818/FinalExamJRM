@@ -10,7 +10,6 @@ import React, { useCallback, useEffect, useState } from "react";
 
 const EditGamePage: React.FC = () => {
   const [loading, setLoading] = useState(true);
-  const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [template, setTemplate] = useState<GameTemplate | null>(null);
   const router = useRouter();
@@ -34,23 +33,6 @@ const EditGamePage: React.FC = () => {
       loadGameTemplate(parseInt(gameId as string));
     }
   }, [gameId, loadGameTemplate]);
-
-  const handleUpdateGameTemplate = async (
-    request: CreateGameTemplateRequest
-  ) => {
-    if (!template) return;
-
-    try {
-      setSubmitting(true);
-      setError(null);
-      await gameTemplateApi.update(template.id, request);
-      router.push("/manage-templates");
-    } catch (err) {
-      setError(handleApiError(err));
-    } finally {
-      setSubmitting(false);
-    }
-  };
 
   const handleCancel = () => {
     router.push("/manage-templates");
@@ -81,12 +63,10 @@ const EditGamePage: React.FC = () => {
 
     return (
       <CreateGameForm
-        onSubmit={handleUpdateGameTemplate}
         onCancel={handleCancel}
-        isSubmitting={submitting}
         initialData={initialData}
         isEditing={true}
-        error={error}
+        templateId={template.id}
       />
     );
   };
