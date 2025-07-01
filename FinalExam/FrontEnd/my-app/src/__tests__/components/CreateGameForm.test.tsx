@@ -1,8 +1,34 @@
 import CreateGameForm from "@/components/CreateGameForm";
+import { gameTemplateApi } from "@/services/api";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
+// Mock Next.js router
+jest.mock("next/router", () => ({
+  useRouter: () => ({
+    push: jest.fn(),
+    pathname: "/create-game",
+    query: {},
+    asPath: "/create-game",
+  }),
+}));
+
+// Mock the API
+jest.mock("@/services/api", () => ({
+  gameTemplateApi: {
+    create: jest.fn().mockResolvedValue({
+      id: 1,
+      name: "Test Game",
+      author: "Test Author",
+      minRange: 1,
+      maxRange: 100,
+      rules: [{ divisor: 3, replacement: "Fizz" }],
+      createdAt: "2025-01-01T00:00:00Z",
+    }),
+  },
+  handleApiError: jest.fn().mockReturnValue("API Error"),
+}));
+
 describe("CreateGameForm", () => {
-  const mockOnSubmit = jest.fn();
   const mockOnCancel = jest.fn();
 
   beforeEach(() => {
@@ -10,7 +36,7 @@ describe("CreateGameForm", () => {
   });
 
   it("renders form fields correctly", () => {
-    render(<CreateGameForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} />);
+    render(<CreateGameForm onCancel={mockOnCancel} />);
 
     expect(screen.getByLabelText(/game name/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/author name/i)).toBeInTheDocument();
@@ -20,7 +46,7 @@ describe("CreateGameForm", () => {
   });
 
   it("starts with one default rule", () => {
-    render(<CreateGameForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} />);
+    render(<CreateGameForm onCancel={mockOnCancel} />);
 
     const divisorInputs = screen.getAllByPlaceholderText("e.g., 3, 5, 7");
     const replacementInputs = screen.getAllByPlaceholderText(
@@ -33,7 +59,7 @@ describe("CreateGameForm", () => {
   });
 
   it("allows adding and removing rules", async () => {
-    render(<CreateGameForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} />);
+    render(<CreateGameForm onCancel={mockOnCancel} />);
 
     // Add a rule
     fireEvent.click(screen.getByText("Add Rule"));
@@ -55,7 +81,7 @@ describe("CreateGameForm", () => {
   });
 
   it("submits form with correct data", async () => {
-    render(<CreateGameForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} />);
+    render(<CreateGameForm onCancel={mockOnCancel} />);
 
     // Fill form
     fireEvent.change(screen.getByLabelText(/game name/i), {
@@ -72,7 +98,7 @@ describe("CreateGameForm", () => {
     fireEvent.click(screen.getByText("Create Game"));
 
     await waitFor(() => {
-      expect(mockOnSubmit).toHaveBeenCalledWith({
+      expect(gameTemplateApi.create).toHaveBeenCalledWith({
         name: "Test Game",
         author: "Test Author",
         minRange: 1,
@@ -83,7 +109,7 @@ describe("CreateGameForm", () => {
   });
 
   it("calls onCancel when cancel button is clicked", () => {
-    render(<CreateGameForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} />);
+    render(<CreateGameForm onCancel={mockOnCancel} />);
 
     fireEvent.click(screen.getByText("Cancel"));
     expect(mockOnCancel).toHaveBeenCalled();
