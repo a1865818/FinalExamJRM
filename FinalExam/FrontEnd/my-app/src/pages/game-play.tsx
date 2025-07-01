@@ -4,7 +4,6 @@ import Layout from "@/components/Layout";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { gameSessionApi, handleApiError } from "@/services/api";
 import { GameQuestion, GameSession, SubmitAnswerRequest } from "@/types/game";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useCallback, useEffect, useState } from "react";
 
@@ -41,7 +40,9 @@ const GamePlayPage: React.FC = () => {
 
         setTimeout(() => {
           router.push(
-            `/game-result?sessionId=${sessionId}&reason=${reason || "completed"}`
+            `/game-result?sessionId=${sessionId}&reason=${
+              reason || "completed"
+            }`
           );
         }, 1000);
       } catch (err) {
@@ -229,11 +230,27 @@ const GamePlayPage: React.FC = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-white bg-opacity-80">
           <div className="card-elevated max-w-lg mx-auto text-center space-y-6 animate-scale-in">
             <div className="w-20 h-20 mx-auto bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-              <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+              <svg
+                className="w-10 h-10 text-white"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
             </div>
             <div className="space-y-3">
-              <h2 className="text-2xl font-bold text-slate-800">Game Complete!</h2>
-              <p className="text-lg text-slate-600">Redirecting to results...</p>
+              <h2 className="text-2xl font-bold text-slate-800">
+                Game Complete!
+              </h2>
+              <p className="text-lg text-slate-600">
+                Redirecting to results...
+              </p>
             </div>
             <div className="flex justify-center">
               <div className="loading-spinner w-8 h-8"></div>
@@ -284,22 +301,6 @@ const GamePlayPage: React.FC = () => {
       description="Play your FizzBuzz game"
       className="min-h-screen bg-gray-100"
     >
-      <div className="flex justify-between items-center mb-8">
-        <div className="flex space-x-4">
-          <Link
-            href="/history"
-            className="text-blue-600 hover:text-blue-800 transition-colors"
-          >
-            View History
-          </Link>
-          <Link
-            href="/"
-            className="text-primary-600 hover:text-primary-800 transition-colors"
-          >
-            New Game
-          </Link>
-        </div>
-      </div>
       {renderContent()}
     </Layout>
   );
