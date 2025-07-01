@@ -5,6 +5,7 @@ import {
   GameHistoryRequest,
   PaginatedGameHistoryResponse,
 } from "@/types/gameHistory";
+import { ChevronLeft, ChevronRight, Filter, Search, X } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import ErrorMessage from "../ErrorMessage";
 import LoadingSpinner from "../LoadingSpinner";
@@ -111,19 +112,7 @@ const GameHistory: React.FC<GameHistoryProps> = ({ onViewPlayerProfile }) => {
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center space-x-3">
             <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
-              <svg
-                className="w-5 h-5 text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.414A1 1 0 013 6.707V4z"
-                />
-              </svg>
+              <Filter className="w-5 h-5 text-white" />
             </div>
             <div>
               <h3 className="text-lg font-semibold text-slate-800">Filters</h3>
@@ -136,19 +125,7 @@ const GameHistory: React.FC<GameHistoryProps> = ({ onViewPlayerProfile }) => {
               onClick={clearFilters}
               className="btn-ghost btn-sm flex items-center"
             >
-              <svg
-                className="w-4 h-4 mr-1"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
+              <X className="w-4 h-4 mr-1" />
               Clear Filters
             </button>
           )}
@@ -265,19 +242,7 @@ const GameHistory: React.FC<GameHistoryProps> = ({ onViewPlayerProfile }) => {
           ) : (
             <div className="text-center py-20">
               <div className="w-24 h-24 mx-auto bg-gradient-to-br from-slate-100 to-slate-200 rounded-3xl flex items-center justify-center mb-6">
-                <svg
-                  className="w-12 h-12 text-slate-400"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                  />
-                </svg>
+                <Search className="w-12 h-12 text-slate-400" />
               </div>
               <h3 className="text-xl font-semibold text-slate-600 mb-2">
                 No Games Found
@@ -303,19 +268,7 @@ const GameHistory: React.FC<GameHistoryProps> = ({ onViewPlayerProfile }) => {
                 disabled={!gameHistory.hasPreviousPage}
                 className="btn-secondary disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <svg
-                  className="w-4 h-4 mr-1"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15 19l-7-7 7-7"
-                  />
-                </svg>
+                <ChevronLeft className="w-4 h-4 mr-1" />
                 Previous
               </button>
 
@@ -351,19 +304,7 @@ const GameHistory: React.FC<GameHistoryProps> = ({ onViewPlayerProfile }) => {
                 className="btn-secondary disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Next
-                <svg
-                  className="w-4 h-4 ml-1"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
+                <ChevronRight className="w-4 h-4 ml-1" />
               </button>
             </div>
           )}

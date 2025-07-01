@@ -4,6 +4,7 @@ import Layout from "@/components/Layout";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { gameTemplateApi, handleApiError } from "@/services/api";
 import { GameTemplate } from "@/types/game";
+import { Plus } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useCallback, useEffect, useState } from "react";
@@ -95,19 +96,7 @@ const ManageTemplatesPage: React.FC = () => {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6">
           <Link href="/create-game">
             <button className="btn-primary btn-lg px-8 py-4 text-lg font-semibold">
-              <svg
-                className="w-5 h-5 mr-2"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 4v16m8-8H4"
-                />
-              </svg>
+              <Plus className="w-5 h-5 mr-2" />
               Create New Template
             </button>
           </Link>

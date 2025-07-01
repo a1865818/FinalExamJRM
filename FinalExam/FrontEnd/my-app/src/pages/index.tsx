@@ -3,6 +3,14 @@ import GameTemplateList from "@/components/GameTemplateList";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { gameTemplateApi, handleApiError } from "@/services/api";
 import { GameTemplate } from "@/types/game";
+import {
+  BarChart3,
+  History,
+  Menu,
+  Plus,
+  Settings,
+  Sparkles,
+} from "lucide-react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -64,19 +72,7 @@ const HomePage: React.FC = () => {
               <div className="card-interactive bg-gradient-to-br from-blue-50 to-indigo-100 border-blue-200/50 group-hover:from-blue-100 group-hover:to-indigo-200">
                 <div className="text-center space-y-4">
                   <div className="w-16 h-16 mx-auto bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300">
-                    <svg
-                      className="w-8 h-8 text-white"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M12 4v16m8-8H4"
-                      />
-                    </svg>
+                    <Plus className="w-8 h-8 text-white" />
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-slate-800 group-hover:text-blue-700 transition-colors">
@@ -94,25 +90,7 @@ const HomePage: React.FC = () => {
               <div className="card-interactive bg-gradient-to-br from-purple-50 to-violet-100 border-purple-200/50 group-hover:from-purple-100 group-hover:to-violet-200">
                 <div className="text-center space-y-4">
                   <div className="w-16 h-16 mx-auto bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300">
-                    <svg
-                      className="w-8 h-8 text-white"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-                      />
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                      />
-                    </svg>
+                    <Settings className="w-8 h-8 text-white" />
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-slate-800 group-hover:text-purple-700 transition-colors">
@@ -130,19 +108,7 @@ const HomePage: React.FC = () => {
               <div className="card-interactive bg-gradient-to-br from-emerald-50 to-teal-100 border-emerald-200/50 group-hover:from-emerald-100 group-hover:to-teal-200">
                 <div className="text-center space-y-4">
                   <div className="w-16 h-16 mx-auto bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300">
-                    <svg
-                      className="w-8 h-8 text-white"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
+                    <History className="w-8 h-8 text-white" />
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-slate-800 group-hover:text-emerald-700 transition-colors">
@@ -160,19 +126,7 @@ const HomePage: React.FC = () => {
               <div className="card-interactive bg-gradient-to-br from-amber-50 to-orange-100 border-amber-200/50 group-hover:from-amber-100 group-hover:to-orange-200">
                 <div className="text-center space-y-4">
                   <div className="w-16 h-16 mx-auto bg-gradient-to-br from-amber-500 to-amber-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300">
-                    <svg
-                      className="w-8 h-8 text-white"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                      />
-                    </svg>
+                    <BarChart3 className="w-8 h-8 text-white" />
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-slate-800 group-hover:text-amber-700 transition-colors">
@@ -250,19 +204,7 @@ const HomePage: React.FC = () => {
 
               {/* Mobile Menu Button */}
               <button className="md:hidden p-2 rounded-xl hover:bg-slate-100 transition-colors">
-                <svg
-                  className="w-6 h-6 text-slate-600"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                </svg>
+                <Menu className="w-6 h-6 text-slate-600" />
               </button>
             </div>
           </div>
@@ -289,19 +231,7 @@ const HomePage: React.FC = () => {
                 <Link href="/create-game">
                   <button className="btn-primary btn-lg px-8 py-4 text-lg font-semibold">
                     Create Your Game
-                    <svg
-                      className="w-5 h-5 ml-2"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M13 7l5 5m0 0l-5 5m5-5H6"
-                      />
-                    </svg>
+                    <Sparkles className="w-5 h-5 ml-2" />
                   </button>
                 </Link>
                 <Link href="#games">

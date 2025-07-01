@@ -570,6 +570,7 @@ import {
   GameSessionStats,
   SubmitAnswerRequest,
 } from "@/types/game";
+import { ArrowRight, Check, Clock, FileText, RefreshCw, X } from "lucide-react";
 import React, { useCallback, useEffect, useState } from "react";
 
 interface GamePlayProps {
@@ -738,19 +739,7 @@ const GamePlay: React.FC<GamePlayProps> = ({
       <div className="min-h-[60vh] flex items-center justify-center">
         <div className="card-elevated max-w-lg mx-auto text-center space-y-6 animate-scale-in">
           <div className="w-20 h-20 mx-auto bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-            <svg
-              className="w-10 h-10 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M5 13l4 4L19 7"
-              />
-            </svg>
+            <Check className="w-10 h-10 text-white" />
           </div>
           <div className="space-y-3">
             <h2 className="text-2xl font-bold text-slate-800">
@@ -851,19 +840,7 @@ const GamePlay: React.FC<GamePlayProps> = ({
               <div className="mt-6 text-center">
                 {!gameStarted ? (
                   <div className="inline-flex items-center px-4 py-2 bg-amber-100 text-amber-800 rounded-xl">
-                    <svg
-                      className="w-5 h-5 mr-2 animate-spin"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                      />
-                    </svg>
+                    <RefreshCw className="w-5 h-5 mr-2 animate-spin" />
                     Waiting for first question...
                   </div>
                 ) : (
@@ -878,19 +855,7 @@ const GamePlay: React.FC<GamePlayProps> = ({
             {/* Game Rules */}
             <div className="card">
               <h3 className="text-xl font-semibold text-slate-800 mb-4 flex items-center">
-                <svg
-                  className="w-6 h-6 mr-2 text-blue-600"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                  />
-                </svg>
+                <FileText className="w-6 h-6 mr-2 text-blue-600" />
                 Game Rules
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -927,33 +892,9 @@ const GamePlay: React.FC<GamePlayProps> = ({
                       }`}
                     >
                       {lastAnswerResult.isCorrect ? (
-                        <svg
-                          className="w-6 h-6 text-white"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M5 13l4 4L19 7"
-                          />
-                        </svg>
+                        <Check className="w-6 h-6 text-white" />
                       ) : (
-                        <svg
-                          className="w-6 h-6 text-white"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M6 18L18 6M6 6l12 12"
-                          />
-                        </svg>
+                        <X className="w-6 h-6 text-white" />
                       )}
                     </div>
                     <div>
@@ -1025,19 +966,7 @@ const GamePlay: React.FC<GamePlayProps> = ({
                     >
                       {timeRemaining <= 0 ? "Time's Up!" : "Submit Answer"}
                       {answer.trim() && timeRemaining > 0 && (
-                        <svg
-                          className="w-5 h-5 ml-2"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M13 7l5 5m0 0l-5 5m5-5H6"
-                          />
-                        </svg>
+                        <ArrowRight className="w-5 h-5 ml-2" />
                       )}
                     </button>
                   </form>
@@ -1045,19 +974,7 @@ const GamePlay: React.FC<GamePlayProps> = ({
               ) : (
                 <div className="py-20 space-y-6">
                   <div className="w-16 h-16 mx-auto bg-slate-100 rounded-full flex items-center justify-center animate-pulse">
-                    <svg
-                      className="w-8 h-8 text-slate-400"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
+                    <Clock className="w-8 h-8 text-slate-400" />
                   </div>
                   <p className="text-lg text-slate-600">
                     {gameStarted

@@ -1,3 +1,4 @@
+import { Gamepad2, Menu } from "lucide-react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -48,7 +49,7 @@ const Layout: React.FC<LayoutProps> = ({
               <Link href="/" className="group">
                 <div className="flex items-center space-x-3">
                   <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300">
-                    <span className="text-white font-bold text-lg">F</span>
+                    <Gamepad2 className="w-6 h-6 text-white" />
                   </div>
                   <h1 className="text-2xl font-bold text-slate-800 group-hover:text-blue-600 transition-colors">
                     FizzBuzz Game
@@ -93,19 +94,7 @@ const Layout: React.FC<LayoutProps> = ({
 
               {/* Mobile Menu Button */}
               <button className="md:hidden p-2 rounded-xl hover:bg-slate-100 transition-colors">
-                <svg
-                  className="w-6 h-6 text-slate-600"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                </svg>
+                <Menu className="w-6 h-6 text-slate-600" />
               </button>
             </div>
           </div>
@@ -156,7 +145,7 @@ const Layout: React.FC<LayoutProps> = ({
             <div className="text-center space-y-6">
               <div className="flex items-center justify-center space-x-3">
                 <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold">F</span>
+                  <Gamepad2 className="w-5 h-5 text-white" />
                 </div>
                 <span className="text-xl font-semibold">FizzBuzz Game</span>
               </div>
