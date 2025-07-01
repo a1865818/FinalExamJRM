@@ -40,6 +40,14 @@
 // export default GameSessionDetails;
 
 import { GameHistoryItem } from "@/types/gameHistory";
+import {
+  CheckCircle,
+  Clock,
+  Target,
+  TrendingUp,
+  Trophy,
+  XCircle,
+} from "lucide-react";
 import React from "react";
 
 interface GameSessionDetailsProps {
@@ -70,54 +78,12 @@ const GameSessionDetails: React.FC<GameSessionDetailsProps> = ({ game }) => {
 
   const getPerformanceIcon = (accuracy: number) => {
     if (accuracy >= 90) {
-      return (
-        <svg
-          className="w-6 h-6 text-emerald-500"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-          />
-        </svg>
-      );
+      return <CheckCircle className="w-6 h-6 text-emerald-500" />;
     }
     if (accuracy >= 70) {
-      return (
-        <svg
-          className="w-6 h-6 text-blue-500"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-          />
-        </svg>
-      );
+      return <Target className="w-6 h-6 text-blue-500" />;
     }
-    return (
-      <svg
-        className="w-6 h-6 text-amber-500"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"
-        />
-      </svg>
-    );
+    return <XCircle className="w-6 h-6 text-amber-500" />;
   };
 
   const getPerformanceMessage = (accuracy: number) => {
@@ -178,19 +144,7 @@ const GameSessionDetails: React.FC<GameSessionDetailsProps> = ({ game }) => {
         {/* Game Details */}
         <div className="card bg-slate-50">
           <h4 className="text-lg font-semibold text-slate-800 mb-4 flex items-center">
-            <svg
-              className="w-5 h-5 mr-2 text-blue-600"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
+            <TrendingUp className="w-5 h-5 mr-2 text-blue-600" />
             Game Details
           </h4>
           <div className="space-y-3">
@@ -224,19 +178,7 @@ const GameSessionDetails: React.FC<GameSessionDetailsProps> = ({ game }) => {
         {/* Timeline */}
         <div className="card bg-slate-50">
           <h4 className="text-lg font-semibold text-slate-800 mb-4 flex items-center">
-            <svg
-              className="w-5 h-5 mr-2 text-emerald-600"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
+            <Clock className="w-5 h-5 mr-2 text-emerald-600" />
             Session Timeline
           </h4>
           <div className="space-y-4">
@@ -271,19 +213,7 @@ const GameSessionDetails: React.FC<GameSessionDetailsProps> = ({ game }) => {
       {/* Achievement Badges */}
       <div className="card bg-gradient-to-br from-purple-50 to-pink-50 border-purple-200/50">
         <h4 className="text-lg font-semibold text-slate-800 mb-4 flex items-center">
-          <svg
-            className="w-5 h-5 mr-2 text-purple-600"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
-            />
-          </svg>
+          <Trophy className="w-5 h-5 mr-2 text-purple-600" />
           Achievements
         </h4>
         <div className="flex flex-wrap gap-2">

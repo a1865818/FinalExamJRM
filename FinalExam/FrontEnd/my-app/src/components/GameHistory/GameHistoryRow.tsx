@@ -1,4 +1,5 @@
 import { GameHistoryItem } from "@/types/gameHistory";
+import { ChevronDown } from "lucide-react";
 import React, { useState } from "react";
 import GameSessionDetails from "./GameSessionDetails";
 
@@ -78,21 +79,11 @@ const GameHistoryRow: React.FC<GameHistoryRowProps> = ({
               className="btn-ghost btn-sm flex items-center"
             >
               {showDetails ? "Hide" : "View"} Details
-              <svg
+              <ChevronDown
                 className={`w-4 h-4 ml-1 transition-transform ${
                   showDetails ? "rotate-180" : ""
                 }`}
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
+              />
             </button>
           </div>
         </div>
