@@ -31,7 +31,7 @@ const GameResult: React.FC<GameResultProps> = ({
   const performance = getPerformanceMessage(result.accuracyPercentage);
 
   return (
-    <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-8 text-center">
+    <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-8 text-center mt-6 lg:mt-12">
       <h1 className="text-3xl font-bold text-gray-800 mb-2">Game Complete!</h1>
       <p className={`text-xl ${performance.color} mb-8`}>
         {performance.message}

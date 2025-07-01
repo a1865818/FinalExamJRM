@@ -1,9 +1,9 @@
 import ErrorMessage from "@/components/ErrorMessage";
 import GameTemplateList from "@/components/GameTemplateList";
+import Layout from "@/components/Layout";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { gameTemplateApi, handleApiError } from "@/services/api";
 import { GameTemplate } from "@/types/game";
-import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useCallback, useEffect, useState } from "react";
@@ -58,32 +58,20 @@ const ManageTemplatesPage: React.FC = () => {
       return <ErrorMessage message={error} onRetry={loadGameTemplates} />;
 
     return (
-      <div className="space-y-6">
-        <div className="flex justify-between items-center">
-          <div>
-            <h2 className="text-2xl font-semibold text-gray-800">
-              Manage Game Templates
-            </h2>
-            <p className="text-gray-600 mt-1">
-              Create, edit, and delete your custom game templates
-            </p>
-          </div>
-          <Link href="/create-game">
-            <button className="bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 transition-colors">
-              Create New Template
-            </button>
-          </Link>
-        </div>
-
+      <div className="space-y-8">
+        {/* Delete Loading Indicator */}
         {deleteLoading && (
-          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-            <div className="flex items-center">
-              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-yellow-600 mr-2"></div>
-              <span className="text-yellow-800">Deleting template...</span>
+          <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 animate-scale-in">
+            <div className="flex items-center space-x-3">
+              <div className="loading-spinner w-5 h-5"></div>
+              <span className="text-amber-800 font-medium">
+                Deleting template...
+              </span>
             </div>
           </div>
         )}
 
+        {/* Templates List */}
         <GameTemplateList
           templates={templates}
           onSelectTemplate={handleSelectTemplate}
@@ -96,53 +84,55 @@ const ManageTemplatesPage: React.FC = () => {
   };
 
   return (
-    <>
-      <Head>
-        <title>Manage Templates - FizzBuzz Game</title>
-        <meta
-          name="description"
-          content="Manage your custom FizzBuzz game templates"
-        />
-      </Head>
-
-      <div className="min-h-screen bg-gray-100">
-        <header className="bg-white shadow-sm">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-            <div className="flex items-center justify-between">
-              <Link href="/">
-                <h1 className="text-3xl font-bold text-gray-900 cursor-pointer hover:text-primary-600 transition-colors">
-                  FizzBuzz Game
-                </h1>
-              </Link>
-              <nav className="flex space-x-4">
-                <Link
-                  href="/"
-                  className="text-gray-600 hover:text-primary-600 transition-colors"
-                >
-                  Home
-                </Link>
-                <Link
-                  href="/history"
-                  className="text-gray-600 hover:text-primary-600 transition-colors"
-                >
-                  History
-                </Link>
-                <Link
-                  href="/stats"
-                  className="text-gray-600 hover:text-primary-600 transition-colors"
-                >
-                  Statistics
-                </Link>
-              </nav>
-            </div>
+    <Layout
+      title="Manage Templates - FizzBuzz Game"
+      description="Manage your custom FizzBuzz game templates. Create, edit, and organize your game variants."
+      className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100"
+      showHero={true}
+      heroTitle="Manage Templates"
+      heroDescription="Create, edit, and organize your custom FizzBuzz game variants"
+      heroActions={
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6">
+          <Link href="/create-game">
+            <button className="btn-primary btn-lg px-8 py-4 text-lg font-semibold">
+              <svg
+                className="w-5 h-5 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 4v16m8-8H4"
+                />
+              </svg>
+              Create New Template
+            </button>
+          </Link>
+          <Link href="/">
+            <button className="btn-secondary btn-lg px-8 py-4 text-lg">
+              Back to Home
+            </button>
+          </Link>
+        </div>
+      }
+    >
+      {/* Delete Loading Indicator */}
+      {deleteLoading && (
+        <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 animate-scale-in mb-8">
+          <div className="flex items-center space-x-3">
+            <div className="loading-spinner w-5 h-5"></div>
+            <span className="text-amber-800 font-medium">
+              Deleting template...
+            </span>
           </div>
-        </header>
+        </div>
+      )}
 
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {renderContent()}
-        </main>
-      </div>
-    </>
+      <div className="animate-slide-up">{renderContent()}</div>
+    </Layout>
   );
 };
 

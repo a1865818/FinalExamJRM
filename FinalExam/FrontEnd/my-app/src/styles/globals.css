@@ -2,9 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
 @layer base {
   html {
     font-family: 'Inter', system-ui, sans-serif;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
   }
   
   * {
@@ -14,77 +17,240 @@
   }
 
   body {
-    @apply bg-gray-50 text-gray-900;
+    @apply bg-gradient-to-br from-slate-50 via-white to-slate-100 text-slate-800 antialiased;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
   }
 }
 
 @layer components {
+  /* Button System */
+  .btn {
+    @apply inline-flex items-center justify-center px-6 py-3 text-sm font-medium rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
   .btn-primary {
-    @apply bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
+    @apply btn bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg hover:from-blue-700 hover:to-blue-800 hover:shadow-xl focus:ring-blue-500 transform hover:-translate-y-0.5;
   }
 
   .btn-secondary {
-    @apply bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2;
+    @apply btn bg-white text-slate-700 border border-slate-200 shadow-sm hover:bg-slate-50 hover:border-slate-300 focus:ring-slate-500 hover:shadow-md;
+  }
+
+  .btn-ghost {
+    @apply btn bg-transparent text-slate-600 hover:bg-slate-100 hover:text-slate-800 focus:ring-slate-500;
   }
 
   .btn-success {
-    @apply bg-success-600 text-white px-4 py-2 rounded-lg hover:bg-success-700 transition-colors focus:outline-none focus:ring-2 focus:ring-success-500 focus:ring-offset-2;
+    @apply btn bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-lg hover:from-emerald-600 hover:to-emerald-700 hover:shadow-xl focus:ring-emerald-500 transform hover:-translate-y-0.5;
   }
 
   .btn-danger {
-    @apply bg-error-600 text-white px-4 py-2 rounded-lg hover:bg-error-700 transition-colors focus:outline-none focus:ring-2 focus:ring-error-500 focus:ring-offset-2;
+    @apply btn bg-gradient-to-r from-red-500 to-red-600 text-white shadow-lg hover:from-red-600 hover:to-red-700 hover:shadow-xl focus:ring-red-500 transform hover:-translate-y-0.5;
   }
 
-  .input-field {
-    @apply w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent;
+  .btn-lg {
+    @apply px-8 py-4 text-base font-semibold rounded-2xl;
   }
 
+  .btn-sm {
+    @apply px-4 py-2 text-xs font-medium rounded-lg;
+  }
+
+  /* Card System */
   .card {
-    @apply bg-white rounded-lg shadow-lg p-6;
+    @apply bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-slate-200/50 p-6 hover:shadow-lg transition-all duration-300;
   }
 
+  .card-elevated {
+    @apply card shadow-xl border-0 bg-white;
+  }
+
+  .card-interactive {
+    @apply card cursor-pointer hover:shadow-2xl hover:-translate-y-1 transition-all duration-300;
+  }
+
+  .card-glass {
+    @apply bg-white/70 backdrop-blur-xl rounded-2xl shadow-xl border border-white/20;
+  }
+
+  /* Input System */
+  .input-field {
+    @apply w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 shadow-sm hover:shadow-md;
+  }
+
+  .input-field-lg {
+    @apply input-field px-6 py-4 text-lg rounded-2xl;
+  }
+
+  /* Game Elements */
   .game-number {
-    @apply text-6xl font-bold text-primary-600 select-none;
+    @apply text-8xl md:text-9xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 select-none tracking-tight;
+  }
+
+  .game-answer-input {
+    @apply w-full max-w-lg mx-auto px-6 py-4 text-2xl text-center bg-white/90 backdrop-blur-sm border-2 border-slate-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300 shadow-lg hover:shadow-xl;
+  }
+
+  /* Timer System */
+  .timer-normal {
+    @apply text-emerald-600 font-bold;
   }
 
   .timer-warning {
-    @apply text-yellow-600;
+    @apply text-amber-500 font-bold animate-pulse;
   }
 
   .timer-danger {
-    @apply text-red-600 animate-pulse;
+    @apply text-red-500 font-bold animate-bounce;
+  }
+
+  /* Score System */
+  .score-card {
+    @apply bg-gradient-to-br from-white to-slate-50 rounded-2xl p-4 border border-slate-100 shadow-sm;
   }
 
   .score-correct {
-    @apply text-success-600 font-semibold;
+    @apply text-emerald-600 font-bold;
   }
 
   .score-incorrect {
-    @apply text-error-600 font-semibold;
+    @apply text-red-500 font-bold;
   }
 
-  .answer-correct {
-    @apply bg-success-50 border border-success-200 text-success-800 p-4 rounded-lg;
+  /* Feedback System */
+  .feedback-correct {
+    @apply bg-gradient-to-r from-emerald-50 to-green-50 border border-emerald-200 text-emerald-800 p-6 rounded-2xl shadow-lg backdrop-blur-sm;
   }
 
-  .answer-incorrect {
-    @apply bg-error-50 border border-error-200 text-error-800 p-4 rounded-lg;
+  .feedback-incorrect {
+    @apply bg-gradient-to-r from-red-50 to-rose-50 border border-red-200 text-red-800 p-6 rounded-2xl shadow-lg backdrop-blur-sm;
   }
 
-  .rule-display {
-    @apply bg-gray-50 rounded-lg p-2 text-sm border;
+  /* Rule Display */
+  .rule-chip {
+    @apply inline-flex items-center px-3 py-1.5 bg-gradient-to-r from-slate-100 to-slate-50 text-slate-700 text-sm font-medium rounded-xl border border-slate-200 shadow-sm;
   }
 
-  .game-template-card {
-    @apply bg-white rounded-lg border-2 border-gray-200 p-4 cursor-pointer transition-all hover:shadow-lg hover:border-primary-300;
+  /* Template Cards */
+  .template-card {
+    @apply bg-white rounded-2xl border-2 border-slate-200 p-6 cursor-pointer transition-all duration-300 hover:shadow-xl hover:border-blue-300;
   }
 
-  .game-template-card.selected {
-    @apply border-primary-500 bg-primary-50;
+  .template-card-selected {
+    @apply template-card border-blue-500 bg-gradient-to-br from-blue-50 to-indigo-50 shadow-lg;
   }
 
+  /* Navigation */
+  .nav-link {
+    @apply text-slate-600 hover:text-blue-600 transition-colors duration-200 font-medium;
+  }
+
+  .nav-link-active {
+    @apply text-blue-600 font-semibold;
+  }
+
+  /* Loading States */
   .loading-spinner {
-    @apply animate-spin rounded-full border-b-2 border-primary-600;
+    @apply animate-spin rounded-full border-4 border-slate-200 border-t-blue-600;
+  }
+
+  .loading-skeleton {
+    @apply animate-pulse bg-gradient-to-r from-slate-200 via-slate-100 to-slate-200 rounded-xl;
+  }
+
+  /* Badges and Status */
+  .badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold;
+  }
+
+  .badge-success {
+    @apply badge bg-emerald-100 text-emerald-800;
+  }
+
+  .badge-warning {
+    @apply badge bg-amber-100 text-amber-800;
+  }
+
+  .badge-error {
+    @apply badge bg-red-100 text-red-800;
+  }
+
+  .badge-info {
+    @apply badge bg-blue-100 text-blue-800;
+  }
+
+  /* Progress Bars */
+  .progress-bar {
+    @apply w-full bg-slate-200 rounded-full h-2 overflow-hidden;
+  }
+
+  .progress-fill {
+    @apply h-full bg-gradient-to-r from-blue-500 to-blue-600 rounded-full transition-all duration-500 ease-out;
+  }
+
+  /* Tables */
+  .table-modern {
+    @apply min-w-full divide-y divide-slate-200 bg-white rounded-2xl overflow-hidden shadow-xl;
+  }
+
+  .table-header {
+    @apply bg-gradient-to-r from-slate-50 to-slate-100;
+  }
+
+  .table-cell {
+    @apply px-6 py-4 whitespace-nowrap text-sm text-slate-700;
+  }
+
+  .table-header-cell {
+    @apply table-cell font-semibold text-slate-900 uppercase tracking-wider;
+  }
+
+  .table-row {
+    @apply hover:bg-slate-50 transition-colors duration-150;
+  }
+
+  /* Modal and Overlays */
+  .modal-overlay {
+    @apply fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4;
+  }
+
+  .modal-content {
+    @apply bg-white rounded-3xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-auto;
+  }
+
+  /* Animations */
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-out;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.6s ease-out;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.4s ease-out;
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  /* Gradients */
+  .gradient-primary {
+    @apply bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800;
+  }
+
+  .gradient-success {
+    @apply bg-gradient-to-r from-emerald-500 to-teal-600;
+  }
+
+  .gradient-surface {
+    @apply bg-gradient-to-br from-white via-slate-50 to-slate-100;
   }
 }
 
@@ -92,41 +258,111 @@
   .text-balance {
     text-wrap: balance;
   }
-}
 
-/* Custom focus styles for better accessibility */
-.focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 2px #3b82f6, 0 0 0 4px rgba(59, 130, 246, 0.2);
-}
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 
-/* Responsive text scaling */
-@media (min-width: 640px) {
-  .game-number {
-    font-size: 6rem;
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Glassmorphism utilities */
+  .glass {
+    @apply bg-white/20 backdrop-blur-lg border border-white/30;
+  }
+
+  .glass-dark {
+    @apply bg-black/20 backdrop-blur-lg border border-white/10;
   }
 }
 
-/* Print styles */
-@media print {
-  .no-print {
-    display: none !important;
+/* Custom Keyframes */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(60px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Responsive Design Enhancements */
+@media (max-width: 640px) {
+  .game-number {
+    @apply text-6xl;
   }
   
-  body {
-    color: black;
-    background-color: white;
+  .btn {
+    @apply px-4 py-2.5 text-sm;
+  }
+  
+  .card {
+    @apply p-4 rounded-xl;
+  }
+  
+  .modal-content {
+    @apply rounded-2xl m-2;
   }
 }
 
-/* High contrast mode support */
+/* Dark mode support (optional) */
+@media (prefers-color-scheme: dark) {
+  .dark-mode {
+    @apply bg-slate-900 text-slate-100;
+  }
+}
+
+/* High contrast mode */
 @media (prefers-contrast: high) {
   .card {
-    border: 2px solid #111827;
+    @apply border-2 border-slate-900;
   }
   
   .btn-primary {
-    background-color: #111827;
-    border: 2px solid #111827;
+    @apply bg-blue-700 border-2 border-blue-900;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
