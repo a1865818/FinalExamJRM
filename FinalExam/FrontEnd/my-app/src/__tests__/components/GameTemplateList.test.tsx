@@ -45,24 +45,10 @@ describe("GameTemplateList", () => {
     expect(screen.getByText("Classic FizzBuzz")).toBeInTheDocument();
     expect(screen.getByText("Custom Game")).toBeInTheDocument();
 
-    // Use getAllByText for "By" text that appears multiple times
-    const systemElements = screen.getAllByText((content, element) => {
-      return (
-        (element?.textContent?.includes("By:") &&
-          element?.textContent?.includes("System")) ||
-        false
-      );
-    });
-    expect(systemElements.length).toBeGreaterThan(0);
-
-    const userElements = screen.getAllByText((content, element) => {
-      return (
-        (element?.textContent?.includes("By:") &&
-          element?.textContent?.includes("User")) ||
-        false
-      );
-    });
-    expect(userElements.length).toBeGreaterThan(0);
+    // Check for "By" text and author names separately since they are in different spans
+    expect(screen.getAllByText("By")).toHaveLength(2);
+    expect(screen.getByText("System")).toBeInTheDocument();
+    expect(screen.getByText("User")).toBeInTheDocument();
   });
 
   it("displays game rules correctly", () => {
@@ -73,33 +59,13 @@ describe("GameTemplateList", () => {
       />
     );
 
-    // Use getAllByText to handle multiple elements that match the same text
-    const fizzElements = screen.getAllByText((content, element) => {
-      return (
-        (element?.textContent?.includes("3") &&
-          element?.textContent?.includes("Fizz")) ||
-        false
-      );
-    });
-    expect(fizzElements.length).toBeGreaterThan(0);
-
-    const buzzElements = screen.getAllByText((content, element) => {
-      return (
-        (element?.textContent?.includes("5") &&
-          element?.textContent?.includes("Buzz")) ||
-        false
-      );
-    });
-    expect(buzzElements.length).toBeGreaterThan(0);
-
-    const fooElements = screen.getAllByText((content, element) => {
-      return (
-        (element?.textContent?.includes("7") &&
-          element?.textContent?.includes("Foo")) ||
-        false
-      );
-    });
-    expect(fooElements.length).toBeGreaterThan(0);
+    // Check for individual rule components - they are in separate spans
+    expect(screen.getByText("3")).toBeInTheDocument();
+    expect(screen.getByText('"Fizz"')).toBeInTheDocument();
+    expect(screen.getByText("5")).toBeInTheDocument();
+    expect(screen.getByText('"Buzz"')).toBeInTheDocument();
+    expect(screen.getByText("7")).toBeInTheDocument();
+    expect(screen.getByText('"Foo"')).toBeInTheDocument();
   });
 
   it("calls onSelectTemplate when a template is clicked", () => {
@@ -110,10 +76,10 @@ describe("GameTemplateList", () => {
       />
     );
 
-    // Click the template container, not just any div
+    // Click the template container - find it by class name
     const templateContainer = screen
       .getByText("Classic FizzBuzz")
-      .closest('[class*="border-2"]');
+      .closest('[class*="template-card"]');
     fireEvent.click(templateContainer!);
     expect(mockOnSelectTemplate).toHaveBeenCalledWith(mockTemplates[0]);
   });
@@ -127,11 +93,10 @@ describe("GameTemplateList", () => {
       />
     );
 
-    // Find the template container by using a more specific selector
-    // The template container has the border classes and onClick handler
+    // Find the selected template container
     const templateContainer = screen
       .getByText("Classic FizzBuzz")
-      .closest('[class*="border-2"]');
-    expect(templateContainer).toHaveClass("border-primary-500");
+      .closest('[class*="template-card"]');
+    expect(templateContainer).toHaveClass("template-card-selected");
   });
 });

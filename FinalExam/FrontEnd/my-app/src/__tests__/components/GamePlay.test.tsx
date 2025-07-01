@@ -2,6 +2,19 @@ import GamePlay from "@/components/GamePlay/GamePlay";
 import { GameQuestion, GameSession } from "@/types/game";
 import { act, fireEvent, render, screen } from "@testing-library/react";
 
+// Mock the API service
+jest.mock("@/services/api", () => ({
+  gameSessionApi: {
+    getStats: jest.fn().mockResolvedValue({
+      totalQuestions: 10,
+      correctAnswers: 5,
+      incorrectAnswers: 2,
+      accuracyPercentage: 71.4,
+      averageResponseTime: 2.5,
+    }),
+  },
+}));
+
 const mockSession: GameSession = {
   sessionId: 1,
   gameTemplateId: 1,
@@ -27,10 +40,18 @@ describe("GamePlay", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     jest.useFakeTimers();
+    // Mock console.error to suppress expected API error logs during tests
+    jest.spyOn(console, "error").mockImplementation(() => {});
+    jest.spyOn(console, "log").mockImplementation(() => {});
   });
 
   afterEach(() => {
     jest.useRealTimers();
+    // Restore console methods
+    (console.error as jest.Mock).mockRestore();
+    (console.log as jest.Mock).mockRestore();
+    // Clear all timeouts and intervals
+    jest.clearAllTimers();
   });
 
   it("displays game information correctly", () => {
@@ -124,7 +145,7 @@ describe("GamePlay", () => {
       />
     );
 
-    expect(screen.getByText("✅ Correct!")).toBeInTheDocument();
+    expect(screen.getByText("Correct!")).toBeInTheDocument();
   });
 
   it("calls onGameEnd when timer reaches zero", () => {
