@@ -38,6 +38,7 @@ const CreateGameForm: React.FC<CreateGameFormProps> = ({
   const [rules, setRules] = useState<GameRule[]>(
     initialData?.rules || [{ divisor: 3, replacement: "Fizz" }]
   );
+  const [hasSubmitted, setHasSubmitted] = useState(false);
 
   // Update form data when initialData changes
   useEffect(() => {
@@ -72,6 +73,7 @@ const CreateGameForm: React.FC<CreateGameFormProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setHasSubmitted(true);
 
     if (!validateForm()) {
       // Scroll to the validation error section
@@ -91,7 +93,6 @@ const CreateGameForm: React.FC<CreateGameFormProps> = ({
     });
   };
 
-  // Auto-scroll to API error when it appears
   useEffect(() => {
     if (error) {
       const errorSection = document.querySelector("[data-api-error]");
@@ -520,7 +521,7 @@ const CreateGameForm: React.FC<CreateGameFormProps> = ({
             </div>
 
             {/* Form Validation Help */}
-            {!validateForm() && (
+            {hasSubmitted && !validateForm() && (
               <div
                 data-validation-errors
                 className="bg-red-50 border-2 border-red-200 rounded-xl p-6 animate-scale-in"
