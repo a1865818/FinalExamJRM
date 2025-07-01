@@ -164,15 +164,6 @@ namespace WebApplication1.Services
                 return false;
             }
 
-            // Check if template is being used in any game sessions
-            var hasActiveSessions = await _context.GameSessions
-                .AnyAsync(s => s.GameTemplateId == id);
-
-            if (hasActiveSessions)
-            {
-                throw new InvalidOperationException("Cannot delete game template that has active game sessions");
-            }
-
             // Remove rules first (cascade delete should handle this, but being explicit)
             _context.GameRules.RemoveRange(template.Rules);
 

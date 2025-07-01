@@ -150,7 +150,7 @@ namespace WebApplication1.Data
                 entity.HasOne(e => e.GameTemplate)
                     .WithMany()
                     .HasForeignKey(e => e.GameTemplateId)
-                    .OnDelete(DeleteBehavior.Restrict)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_GameSessions_GameTemplates");
 
                 // Indexes
