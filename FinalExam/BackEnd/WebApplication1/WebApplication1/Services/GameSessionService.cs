@@ -85,7 +85,6 @@ namespace WebApplication1.Services
                     throw new InvalidOperationException("Game session has expired");
                 }
 
-                // FIXED: Get ALL used numbers from GameAnswers table for this session
                 var usedNumbersList = await _context.GameAnswers
                     .Where(a => a.GameSessionId == sessionId)
                     .Select(a => a.Number)
@@ -94,7 +93,6 @@ namespace WebApplication1.Services
 
                 var usedNumbers = new HashSet<int>(usedNumbersList);
 
-                // Calculate available numbers in the range
                 var minRange = session.GameTemplate.MinRange;
                 var maxRange = session.GameTemplate.MaxRange;
                 var totalPossibleNumbers = maxRange - minRange + 1;
@@ -102,46 +100,54 @@ namespace WebApplication1.Services
                 Console.WriteLine($"Session {sessionId}: Used numbers count: {usedNumbers.Count}, Total possible: {totalPossibleNumbers}");
                 Console.WriteLine($"Used numbers: [{string.Join(", ", usedNumbers.OrderBy(n => n))}]");
 
-                // Check if all numbers in the range have been used
                 if (usedNumbers.Count >= totalPossibleNumbers)
                 {
                     await CompleteGameSessionAsync(sessionId, "All numbers in range have been used");
                     throw new InvalidOperationException("All numbers in the specified range have been used. Game completed!");
                 }
 
-                // FIXED: Create list of ALL available numbers (not used yet)
-                var availableNumbers = new List<int>();
-                for (int i = minRange; i <= maxRange; i++)
+                var random = new Random();
+                int selectedNumber = -1;
+                const int maxTries = 10;
+                bool found = false;
+
+                for (int i = 0; i < maxTries; i++)
                 {
-                    if (!usedNumbers.Contains(i))
+                    int candidate = random.Next(minRange, maxRange + 1);
+                    if (!usedNumbers.Contains(candidate))
                     {
-                        availableNumbers.Add(i);
+                        selectedNumber = candidate;
+                        found = true;
+                        break;
                     }
                 }
 
-                Console.WriteLine($"Available numbers count: {availableNumbers.Count}");
-                Console.WriteLine($"Available numbers: [{string.Join(", ", availableNumbers.Take(10))}{(availableNumbers.Count > 10 ? "..." : "")}]");
+                if (!found)
+                {
+                    for (int i = minRange; i <= maxRange; i++)
+                    {
+                        if (!usedNumbers.Contains(i))
+                        {
+                            selectedNumber = i;
+                            found = true;
+                            break;
+                        }
+                    }
+                }
 
-                if (availableNumbers.Count == 0)
+                if (!found)
                 {
                     await CompleteGameSessionAsync(sessionId, "No available numbers remaining");
                     throw new InvalidOperationException("No available numbers remaining in the specified range. Game completed!");
                 }
 
-                // FIXED: Generate random number from ONLY available numbers
-                var random = new Random();
-                var randomIndex = random.Next(availableNumbers.Count);
-                var selectedNumber = availableNumbers[randomIndex];
+                Console.WriteLine($"Selected number: {selectedNumber}");
 
-                Console.WriteLine($"Selected number: {selectedNumber} (index {randomIndex} from {availableNumbers.Count} available)");
-
-                // Double-check that this number hasn't been used (safety check)
                 var alreadyUsed = await _context.GameAnswers
                     .AnyAsync(a => a.GameSessionId == sessionId && a.Number == selectedNumber);
 
                 if (alreadyUsed)
                 {
-                    // This should never happen with the fixed logic, but log it if it does
                     Console.WriteLine($"ERROR: Selected number {selectedNumber} was already used! This should not happen.");
                     throw new InvalidOperationException($"System error: Generated duplicate number {selectedNumber}");
                 }
@@ -178,7 +184,6 @@ namespace WebApplication1.Services
                     throw new InvalidOperationException("Game session has expired");
                 }
 
-                // FIXED: Double-check if this number has already been answered (should not happen now)
                 var existingAnswer = await _context.GameAnswers
                     .FirstOrDefaultAsync(a => a.GameSessionId == request.SessionId && a.Number == request.Number);
 

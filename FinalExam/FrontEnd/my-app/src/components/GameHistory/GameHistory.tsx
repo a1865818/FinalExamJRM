@@ -396,7 +396,7 @@ const GameHistory: React.FC<GameHistoryProps> = ({ onViewPlayerProfile }) => {
                 </svg>
               </div>
               <h3 className="text-xl font-semibold text-slate-600 mb-2">
-                No Games Found
+                Nothing Found
               </h3>
               <p className="text-slate-500 mb-6">
                 {hasActiveFilters

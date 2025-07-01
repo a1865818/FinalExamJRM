@@ -41,7 +41,7 @@ const Layout: React.FC<LayoutProps> = ({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      <div className={className}>
+      <div className={`${className} flex flex-col`}>
         {/* Modern Header */}
         <header className="bg-white/80 backdrop-blur-xl border-b border-slate-200/50 sticky top-0 z-40">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -100,47 +100,50 @@ const Layout: React.FC<LayoutProps> = ({
           </div>
         </header>
 
-        {/* Hero Section */}
-        {showHero && heroTitle && (
-          <section className="relative py-16 lg:py-24 overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-amber-50/50 via-transparent to-orange-50/50"></div>
-            <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="text-center space-y-6 animate-fade-in">
-                <div className="space-y-4">
-                  <h1 className="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-600 via-orange-600 to-amber-800 leading-tight">
-                    {heroTitle}
-                  </h1>
-                  {heroDescription && (
-                    <p className="text-xl md:text-2xl text-slate-600 max-w-2xl mx-auto leading-relaxed font-light">
-                      {heroDescription}
-                    </p>
+        {/* Content Container - grows to fill available space */}
+        <div className="flex-1 flex flex-col">
+          {/* Hero Section */}
+          {showHero && heroTitle && (
+            <section className="relative py-16 lg:py-24 overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-amber-50/50 via-transparent to-orange-50/50"></div>
+              <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="text-center space-y-6 animate-fade-in">
+                  <div className="space-y-4">
+                    <h1 className="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-600 via-orange-600 to-amber-800 leading-tight pb-2">
+                      {heroTitle}
+                    </h1>
+                    {heroDescription && (
+                      <p className="text-xl md:text-2xl text-slate-600 max-w-2xl mx-auto leading-relaxed font-light">
+                        {heroDescription}
+                      </p>
+                    )}
+                  </div>
+
+                  {heroActions && (
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6">
+                      {heroActions}
+                    </div>
                   )}
                 </div>
-
-                {heroActions && (
-                  <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6">
-                    {heroActions}
-                  </div>
-                )}
               </div>
-            </div>
 
-            {/* Floating Elements */}
-            <div className="absolute top-20 left-10 w-20 h-20 bg-amber-200/30 rounded-full blur-xl animate-float"></div>
-            <div
-              className="absolute bottom-20 right-10 w-32 h-32 bg-orange-200/30 rounded-full blur-xl animate-float"
-              style={{ animationDelay: "1s" }}
-            ></div>
-          </section>
-        )}
+              {/* Floating Elements */}
+              <div className="absolute top-20 left-10 w-20 h-20 bg-amber-200/30 rounded-full blur-xl animate-float"></div>
+              <div
+                className="absolute bottom-20 right-10 w-32 h-32 bg-orange-200/30 rounded-full blur-xl animate-float"
+                style={{ animationDelay: "1s" }}
+              ></div>
+            </section>
+          )}
 
-        {/* Main Content */}
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
-          {children}
-        </main>
+          {/* Main Content - grows to fill remaining space */}
+          <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 w-full">
+            {children}
+          </main>
+        </div>
 
-        {/* Modern Footer */}
-        <footer className="bg-slate-900 text-white">
+        {/* Modern Footer - always at bottom */}
+        <footer className="bg-slate-900 text-white mt-auto">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div className="text-center space-y-6">
               <div className="flex items-center justify-center space-x-3">

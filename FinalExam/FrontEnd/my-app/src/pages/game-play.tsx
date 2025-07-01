@@ -23,6 +23,7 @@ const GamePlayPage: React.FC = () => {
   const [questionLoading, setQuestionLoading] = useState(false);
   const [gameEnding, setGameEnding] = useState(false);
   const [waitingForNext, setWaitingForNext] = useState(false);
+  const [showGameCompleteOverlay, setShowGameCompleteOverlay] = useState(false);
 
   const router = useRouter();
   const { sessionId } = router.query;
@@ -33,21 +34,20 @@ const GamePlayPage: React.FC = () => {
         if (!sessionId || gameEnding) return;
 
         setGameEnding(true);
+        setShowGameCompleteOverlay(true);
         console.log("Game ending with reason:", reason);
 
         await gameSessionApi.complete(parseInt(sessionId as string));
 
-        // Add a small delay to show completion message
         setTimeout(() => {
           router.push(
-            `/game-result?sessionId=${sessionId}&reason=${
-              reason || "completed"
-            }`
+            `/game-result?sessionId=${sessionId}&reason=${reason || "completed"}`
           );
-        }, 2000);
+        }, 1000);
       } catch (err) {
         setError(handleApiError(err));
         setGameEnding(false);
+        setShowGameCompleteOverlay(false);
       }
     },
     [sessionId, router, gameEnding]
@@ -142,6 +142,20 @@ const GamePlayPage: React.FC = () => {
       const totalAnswered = result.correctAnswers + result.incorrectAnswers;
       console.log(`Total questions answered: ${totalAnswered}`);
 
+      // Fetch session stats to get totalPossibleNumbers
+      let stats: { totalPossibleNumbers: number } | null = null;
+      try {
+        stats = await gameSessionApi.getStats(request.sessionId);
+      } catch (e) {
+        console.warn("Could not fetch session stats for optimization", e);
+      }
+
+      // If we know the total possible numbers, end the game immediately if all are answered
+      if (stats && totalAnswered >= stats.totalPossibleNumbers) {
+        await handleGameEnd("all_numbers_used");
+        return;
+      }
+
       // Set waiting state and clear current question to prevent showing duplicates
       setWaitingForNext(true);
       setCurrentQuestion(null);
@@ -210,6 +224,24 @@ const GamePlayPage: React.FC = () => {
   }, [sessionId, loadGameSession]);
 
   const renderContent = () => {
+    if (showGameCompleteOverlay) {
+      return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white bg-opacity-80">
+          <div className="card-elevated max-w-lg mx-auto text-center space-y-6 animate-scale-in">
+            <div className="w-20 h-20 mx-auto bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+              <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+            </div>
+            <div className="space-y-3">
+              <h2 className="text-2xl font-bold text-slate-800">Game Complete!</h2>
+              <p className="text-lg text-slate-600">Redirecting to results...</p>
+            </div>
+            <div className="flex justify-center">
+              <div className="loading-spinner w-8 h-8"></div>
+            </div>
+          </div>
+        </div>
+      );
+    }
     if (loading) return <LoadingSpinner message="Loading game session..." />;
     if (error)
       return (
