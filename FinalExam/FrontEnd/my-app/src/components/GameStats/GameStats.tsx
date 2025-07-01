@@ -83,19 +83,8 @@ const GameStats: React.FC<GameStatsProps> = ({ onViewPlayerProfile }) => {
 
   return (
     <div className="space-y-8">
-      {/* Header */}
-      <div className="text-center space-y-4">
-        <h1 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text gradient-primary">
-          Game Statistics
-        </h1>
-        <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-          Discover insights, track performance, and see how you stack up against
-          other players
-        </p>
-      </div>
-
       {/* Overall Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
         <div className="card-elevated bg-gradient-to-br from-blue-50 to-indigo-100 border-blue-200/50">
           <div className="flex items-center space-x-4">
             <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center">
