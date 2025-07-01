@@ -11,23 +11,19 @@ import {
   Trash2,
 } from "lucide-react";
 import React, { useEffect, useState } from "react";
+import { gameTemplateApi, handleApiError } from "@/services/api";
+import { useRouter } from "next/router";
 
 interface CreateGameFormProps {
-  onSubmit: (request: CreateGameTemplateRequest) => void;
   onCancel: () => void;
-  isSubmitting?: boolean;
   initialData?: CreateGameTemplateRequest;
   isEditing?: boolean;
-  error?: string | null;
 }
 
 const CreateGameForm: React.FC<CreateGameFormProps> = ({
-  onSubmit,
   onCancel,
-  isSubmitting = false,
   initialData,
   isEditing = false,
-  error,
 }) => {
   const [formData, setFormData] = useState({
     name: initialData?.name || "",
@@ -39,6 +35,9 @@ const CreateGameForm: React.FC<CreateGameFormProps> = ({
     initialData?.rules || [{ divisor: 3, replacement: "Fizz" }]
   );
   const [hasSubmitted, setHasSubmitted] = useState(false);
+  const [apiError, setApiError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   // Update form data when initialData changes
   useEffect(() => {
@@ -71,7 +70,7 @@ const CreateGameForm: React.FC<CreateGameFormProps> = ({
     setRules(updatedRules);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setHasSubmitted(true);
 
@@ -87,14 +86,17 @@ const CreateGameForm: React.FC<CreateGameFormProps> = ({
       return;
     }
 
-    onSubmit({
-      ...formData,
-      rules,
-    });
-  };
-
-  useEffect(() => {
-    if (error) {
+    try {
+      setApiError(null);
+      setLoading(true);
+      const newTemplate = await gameTemplateApi.create({
+        ...formData,
+        rules,
+      });
+      router.push(`/game-setup?gameId=${newTemplate.id}`);
+    } catch (err) {
+      setApiError(handleApiError(err));
+      // Scroll to API error
       const errorSection = document.querySelector("[data-api-error]");
       if (errorSection) {
         errorSection.scrollIntoView({
@@ -102,8 +104,10 @@ const CreateGameForm: React.FC<CreateGameFormProps> = ({
           block: "center",
         });
       }
+    } finally {
+      setLoading(false);
     }
-  }, [error]);
+  };
 
   const validateForm = () => {
     return (
@@ -315,8 +319,9 @@ const CreateGameForm: React.FC<CreateGameFormProps> = ({
                     <p>
                       Your game will include numbers from{" "}
                       <strong>{formData.minRange}</strong> to{" "}
-                      <strong>{formData.maxRange}</strong> (
-                      {formData.maxRange - formData.minRange + 1} total numbers)
+                      <strong>{formData.maxRange}</strong> ({
+                        formData.maxRange - formData.minRange + 1
+                      } total numbers)
                     </p>
                   </div>
                 </div>
@@ -475,30 +480,12 @@ const CreateGameForm: React.FC<CreateGameFormProps> = ({
 
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 pt-8 border-t border-slate-200">
-              {/* API Error Message */}
-              {error && (
-                <div
-                  data-api-error
-                  className="mb-4 bg-gradient-to-r from-red-50 to-rose-50 border-2 border-red-200 rounded-xl p-4 animate-scale-in"
-                >
-                  <div className="flex items-center space-x-3">
-                    <AlertCircle className="w-6 h-6 text-red-600 flex-shrink-0" />
-                    <div>
-                      <p className="text-red-800 font-bold text-base">
-                        ❌ Error
-                      </p>
-                      <p className="text-red-800 font-medium">{error}</p>
-                    </div>
-                  </div>
-                </div>
-              )}
-
               <button
                 type="submit"
-                disabled={isSubmitting || !validateForm()}
+                disabled={loading || !validateForm()}
                 className="btn-primary btn-lg flex-1 sm:flex-none sm:px-12 disabled:opacity-50"
               >
-                {isSubmitting ? (
+                {loading ? (
                   <div className="flex items-center">
                     <div className="loading-spinner w-5 h-5 mr-2"></div>
                     {isEditing ? "Updating..." : "Creating..."}
@@ -520,31 +507,49 @@ const CreateGameForm: React.FC<CreateGameFormProps> = ({
               </button>
             </div>
 
-            {/* Form Validation Help */}
-            {hasSubmitted && !validateForm() && (
-              <div
-                data-validation-errors
-                className="bg-red-50 border-2 border-red-200 rounded-xl p-6 animate-scale-in"
-              >
-                <div className="flex items-start space-x-3">
-                  <AlertTriangle className="w-6 h-6 text-red-600 mt-0.5 flex-shrink-0" />
-                  <div className="text-sm text-red-800">
-                    <p className="font-bold text-base mb-3">
-                      ⚠️ Please fix the following issues before creating your
-                      game:
-                    </p>
-                    <ul className="space-y-2">
-                      {getValidationErrors().map((errorMsg, index) => (
-                        <li key={index} className="flex items-start space-x-2">
-                          <span className="text-red-600 font-bold">•</span>
-                          <span className="font-medium">{errorMsg}</span>
-                        </li>
-                      ))}
-                    </ul>
+            {/* Error messages below buttons */}
+            <div className="mt-6 space-y-4">
+              {apiError && (
+                <div
+                  data-api-error
+                  className="mb-4 bg-gradient-to-r from-red-50 to-rose-50 border-2 border-red-200 rounded-xl p-4 animate-scale-in"
+                >
+                  <div className="flex items-center space-x-3">
+                    <AlertCircle className="w-6 h-6 text-red-600 flex-shrink-0" />
+                    <div>
+                      <p className="text-red-800 font-bold text-base">
+                        ❌ Error
+                      </p>
+                      <p className="text-red-800 font-medium">{apiError}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
+              )}
+              {hasSubmitted && !validateForm() && (
+                <div
+                  data-validation-errors
+                  className="bg-red-50 border-2 border-red-200 rounded-xl p-6 animate-scale-in"
+                >
+                  <div className="flex items-start space-x-3">
+                    <AlertTriangle className="w-6 h-6 text-red-600 mt-0.5 flex-shrink-0" />
+                    <div className="text-sm text-red-800">
+                      <p className="font-bold text-base mb-3">
+                        ⚠️ Please fix the following issues before creating your
+                        game:
+                      </p>
+                      <ul className="space-y-2">
+                        {getValidationErrors().map((errorMsg, index) => (
+                          <li key={index} className="flex items-start space-x-2">
+                            <span className="text-red-600 font-bold">•</span>
+                            <span className="font-medium">{errorMsg}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
           </form>
         </div>
       </div>
